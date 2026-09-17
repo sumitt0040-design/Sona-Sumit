@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sona — A Little Story</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@400;500;600&display=swap');
+:root{--bg:#080608;--text:#f8eef1;--muted:#c8b9bf;--accent:#e889a3}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 20%,transparent 80%,rgba(0,0,0,.25)),linear-gradient(0deg,rgba(0,0,0,.2),transparent 20%,transparent 80%,rgba(0,0,0,.25))}
+*{user-select:none}
+#grain{position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");animation:grain .2s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(2%,-1%)}50%{transform:translate(-1%,2%)}75%{transform:translate(1%,1%)}100%{transform:translate(-2%,-2%)}}
+.vignette{position:fixed;inset:0;z-index:40;pointer-events:none;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.72) 120%)}
+#intro{position:fixed;inset:0;z-index:100;background:#080608;display:flex;align-items:center;justify-content:center;text-align:center;transition:opacity 1.2s,visibility 1.2s}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-inner{width:min(680px,88%);animation:introIn 1.8s both}
+@keyframes introIn{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:#d59aac;margin-bottom:25px}
+.intro-inner h1{font:500 clamp(52px,14vw,105px)/.9 "Playfair Display",serif;margin:0}
+.intro-inner h1 em{font-weight:400}
+.intro-inner p{color:var(--muted);margin:30px auto;line-height:1.8;max-width:500px}
+.start{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:15px 26px;cursor:pointer;letter-spacing:1px;transition:.3s}
+.start:hover{background:#fff;color:#111;transform:translateY(-2px)}
+#progress{position:fixed;top:0;left:0;width:0;height:2px;background:#f3a1b8;z-index:120;box-shadow:0 0 16px #f3a1b8}
+.scene{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;padding:80px 7vw;overflow:hidden}
+.content{position:relative;z-index:4;width:min(820px,100%);text-align:center}
+.hero{min-height:100svh;background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.7)),url("sona.jpg") center/cover no-repeat}
+.hero:before,.photo:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#080608 0%,transparent 50%,rgba(0,0,0,.3) 100%)}
+.hero h2{font:500 clamp(55px,14vw,125px)/.86 "Playfair Display",serif;margin:0}
+.hero h2 em{display:block;font-weight:400}
+.hero .content{margin-top:34vh;text-shadow:0 8px 35px #000}
+.small{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:#e4a1b3}
+.scroll{position:absolute;bottom:30px;font-size:10px;letter-spacing:4px;color:#c6b8bd;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.chapter{background:radial-gradient(circle at 50% 40%,#241319 0,#080608 55%)}
+.chapter h1{font:500 clamp(42px,10vw,85px)/1 "Playfair Display",serif;margin:18px 0}
+.chapter p{color:var(--muted);font-size:17px;line-height:1.95;max-width:660px;margin:18px auto}
+.type{min-height:100svh}
+.type .line{opacity:0;transform:translateY(24px);transition:1s ease}
+.type.show .line{opacity:1;transform:none}
+.delay1{transition-delay:.2s!important}.delay2{transition-delay:.55s!important}.delay3{transition-delay:.9s!important}
+.photo{background-position:center;background-size:cover;background-attachment:scroll}
+.photo.sona{background-image:linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.7)),url("sona.jpg")}
+.photo.sumit{background-image:linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.75)),url("sumit.jpg")}
+.caption{position:absolute;bottom:10vh;left:8vw;text-align:left;z-index:5}
+.caption h2{font:italic 500 clamp(36px,8vw,70px) "Playfair Display",serif;margin:8px 0}
+.caption p{color:#ded0d5;max-width:420px;line-height:1.7}
+.quote{min-height:75vh;background:#0d080b}
+.quote blockquote{font:italic 500 clamp(30px,6vw,57px)/1.35 "Playfair Display",serif;margin:0 auto;max-width:850px}
+.quote cite{display:block;margin-top:28px;font:10px "DM Sans";letter-spacing:4px;text-transform:uppercase;color:#bc9da8}
+.timeline{display:grid;gap:22px;margin:35px auto;max-width:650px;text-align:left}
+.moment{padding:22px 24px;border-left:1px solid #8d5264;background:rgba(255,255,255,.035);border-radius:0 15px 15px 0}
+.moment span{font-size:10px;letter-spacing:3px;color:#d790a5;text-transform:uppercase}.moment h3{font:500 27px "Playfair Display";margin:7px 0}.moment p{font-size:14px;line-height:1.7;color:#bfaeb4;margin:0}
+.ask{min-height:100svh;background:radial-gradient(circle at 50% 35%,#35151f 0,#10080c 45%,#080608 80%)}
+.ask h1{font:500 clamp(45px,11vw,92px)/.95 "Playfair Display";margin:15px 0}
+.ask p{color:#d2c0c6;line-height:1.8;max-width:570px;margin:0 auto 20px}
+.buttons{height:150px;position:relative;width:min(440px,100%);margin:15px auto}
+button.action{position:absolute;top:35px;border:0;border-radius:999px;padding:16px 32px;font-weight:700;font-size:15px;cursor:pointer}
+#yes{left:20%;background:#fff;color:#160a0f;box-shadow:0 8px 35px rgba(255,255,255,.15)}
+#no{left:58%;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.final{min-height:100svh;background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.78)),url("sona.jpg") center/cover}
+.final h1{font:500 clamp(52px,13vw,115px)/.9 "Playfair Display";margin:0}
+.final p{font-size:18px;line-height:1.8;max-width:600px;margin:28px auto;color:#eadde2}
+.hidden{display:none!important}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:150}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:rgba(15,8,12,.88);border:1px solid rgba(255,255,255,.15);padding:13px 20px;border-radius:999px;opacity:0;z-index:160;transition:.5s;white-space:nowrap}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#hearts{position:fixed;inset:0;pointer-events:none;z-index:130;overflow:hidden}.heart{position:absolute;font-size:18px;animation:rise 3s ease-out forwards}
+@keyframes rise{to{transform:translate(var(--x),-90vh) rotate(35deg);opacity:0}}
+@media(max-width:600px){.scene{padding:70px 22px}.caption{left:25px;right:20px}.hero .content{margin-top:28vh}.buttons{height:165px}#yes{left:12%}#no{left:57%}}
+</style>
+</head>
+<body>
+<div id="intro"><div class="intro-inner">
+<div class="eyebrow">A short film by Sumit</div>
+<h1>For <em>Sona.</em></h1>
+<p>Some stories begin with a plan. Ours began with a random swipe, a random conversation… and somehow became my favourite story.</p>
+<button class="start" onclick="begin()">PLAY OUR STORY&nbsp; ♥</button>
+</div></div>
+
+<div id="progress"></div><div id="grain"></div><div class="vignette"></div><div id="hearts"></div>
+<audio id="music" loop><source src="song.mp3" type="audio/mpeg"></audio>
+
+<section class="scene hero">
+<div class="content"><div class="small">Chapter 01 · The beginning</div><h2>It started<br><em>randomly.</em></h2></div><div class="scroll">SCROLL TO CONTINUE ↓</div>
+</section>
+
+<section class="scene chapter type">
+<div class="content">
+<div class="small line">One ordinary day</div>
+<h1 class="line delay1">Two strangers.<br>One conversation.</h1>
+<p class="line delay2">We first met on OmeTV. There was no plan, no expectation, no idea that this tiny moment would become the beginning of something so special.</p>
+<p class="line delay3">Then we exchanged our social media. We kept talking. And somewhere between those conversations, laughs, little arguments, late replies and endless thoughts… something changed.</p>
+</div></section>
+
+<section class="scene photo sona">
+<div class="caption"><div class="small">Chapter 02 · Her</div><h2>Sona.</h2><p>The girl who somehow became the person I look for in every little moment.</p></div>
+</section>
+
+<section class="scene quote">
+<div class="content"><blockquote>“I don't remember the exact moment I fell for you. I just remember that, after a while, talking to you didn't feel like a choice anymore. It felt like home.”</blockquote><cite>— Sumit</cite></div>
+</section>
+
+<section class="scene photo sumit">
+<div class="caption"><div class="small">Chapter 03 · Me</div><h2>And then… me.</h2><p>Somewhere along the way, I stopped wondering where this was going — because I knew I wanted it to be with you.</p></div>
+</section>
+
+<section class="scene chapter">
+<div class="content">
+<div class="small">Chapter 04 · Us</div><h1>From OmeTV<br>to <em>us.</em></h1>
+<div class="timeline">
+<div class="moment"><span>01 · First meeting</span><h3>“Hi…”</h3><p>Two strangers on OmeTV, completely unaware of what was about to begin.</p></div>
+<div class="moment"><span>02 · Socials exchanged</span><h3>“Let's stay in touch.”</h3><p>And somehow, “stay in touch” turned into wanting to talk every day.</p></div>
+<div class="moment"><span>03 · Somewhere in between</span><h3>“I fell for you.”</h3><p>No dramatic moment. Just a thousand tiny moments that made me realise I love you.</p></div>
+</div></div></section>
+
+<section class="scene chapter type">
+<div class="content">
+<div class="small line">Chapter 05 · Thank you</div>
+<h1 class="line delay1">Thank you for<br><em>falling in love with me.</em></h1>
+<p class="line delay2">Thank you for choosing me, for being part of my days, and for giving me memories I already know I'll want to keep forever.</p>
+<p class="line delay3">I can't promise a perfect story. But I can promise that I'll keep choosing you, keep making you smile, and keep making our ordinary days feel a little less ordinary.</p>
+</div></section>
+
+<section class="scene ask" id="ask">
+<div class="content">
+<div class="small">Final chapter · One question</div>
+<h1>Sona,<br><em>movie?</em> 🍿</h1>
+<p>Just you and me. One movie. Some popcorn. A little teasing. A lot of smiles.<br><br><b>Will you go on a movie date with me?</b></p>
+<div class="buttons" id="buttons">
+<button class="action" id="yes" onclick="yes()">YES ❤️</button>
+<button class="action" id="no" onmouseenter="escapeNo()" onclick="escapeNo()">NO 🙈</button>
+</div>
+</div></section>
+
+<section class="scene final hidden" id="final">
+<div class="content">
+<div class="small">The beginning of another chapter</div>
+<h1>It's a date,<br><em>Sona. ❤️</em></h1>
+<p>Movie. Popcorn. You. Me.<br>And one more memory for our story.</p>
+<button class="start" onclick="celebrate()">MAKE IT A MEMORY ✨</button>
+</div></section>
+
+<div id="flash"></div><div id="toast">Movie date locked. 🍿❤️</div>
+<script>
+const music=document.getElementById("music");
+function begin(){
+ document.getElementById("intro").classList.add("hide");
+ music.play().catch(()=>{});
+ setTimeout(()=>document.querySelector(".hero").scrollIntoView(),500);
+}
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.22});
+document.querySelectorAll(".type").forEach(x=>observer.observe(x));
+window.addEventListener("scroll",()=>{
+ const h=document.documentElement.scrollHeight-innerHeight;
+ document.getElementById("progress").style.width=(scrollY/h*100)+"%";
+});
+function escapeNo(){
+ const box=document.getElementById("buttons"), b=document.getElementById("no");
+ const x=Math.random()*Math.max(10,box.clientWidth-b.offsetWidth);
+ const y=Math.random()*105;
+ b.style.left=x+"px"; b.style.top=y+"px";
+}
+function yes(){
+ document.getElementById("ask").classList.add("hidden");
+ document.getElementById("final").classList.remove("hidden");
+ window.scrollTo({top:document.getElementById("final").offsetTop,behavior:"smooth"});
+ burst(45);
+}
+function celebrate(){
+ burst(90);
+ const t=document.getElementById("toast");t.classList.add("on");
+ setTimeout(()=>t.classList.remove("on"),3500);
+}
+function burst(n){
+ for(let i=0;i<n;i++){
+  const h=document.createElement("span");h.className="heart";
+  h.textContent=["♥","♡","💗","✨"][Math.floor(Math.random()*4)];
+  h.style.left=(Math.random()*100)+"vw";h.style.top=(65+Math.random()*30)+"vh";
+  h.style.setProperty("--x",(Math.random()*500-250)+"px");
+  h.style.animationDuration=(2+Math.random()*2)+"s";
+  document.getElementById("hearts").appendChild(h);
+  setTimeout(()=>h.remove(),4500);
+ }
+}
+</script>
+</body>
+</html>
